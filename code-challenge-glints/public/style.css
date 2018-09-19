@@ -36,6 +36,18 @@ div.company-box{
     border-radius: 10px;
 }
 
+div.detil-company-box{
+    width: calc(100%);
+    display: inline-block;
+    margin-left: 0.25em;
+    margin-right: 0.25em;
+    margin-bottom: 0.5em;
+    padding: 1em;
+    background-color: #ffffff;
+    border: 1px solid #cccccc;
+    border-radius: 10px;
+}
+
 span.title{
     margin-bottom: 10px;
     font-weight: 700;
