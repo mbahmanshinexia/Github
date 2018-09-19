@@ -202,7 +202,8 @@ class Home extends Component {
     }
 
     onchangeCompanies(val){
-        this.setState({chooseCompany : val})
+        alert(val)
+        this.setState({officeCompany : val})
     }
 
     render() {
@@ -223,24 +224,101 @@ class Home extends Component {
                                     style={{ width: '100%', marginBottom: '10px' }}
                                     placeholder="company name"
                                     value={this.state.officeName}
+                                    onChange={(e) => {
+                                        this.setState({ officeName: e.target.value });
+                                        if (e.target.value.length > 0) {
+                                            this.setState({ valOfficeName: false })
+                                        }
+                                    }}
+                                    style={this.state.valOfficeName ?
+                                        { border: '1px solid red', width: '100%' }
+                                        :
+                                        { border: '1px solid #ccc', width: '100%' }
+                                    }
                                 />
+                                <span style={this.state.valOfficeName ? { color: '#F86C6B', width: '100%', fontSize: '80%', display: 'inline-block' } : { visibility: 'collapse', width: '100%', display: 'inline-block' }}>*Office name required</span>
                                 <span>Location : </span>
-                                <div style={{ width: '100%', marginBottom: '10px' }}>
-                                    <input className="form-control" style={{ width: 'calc(50% - 5px)', float: 'right' }} placeholder="Longitude" />
-                                    <input className="form-control" style={{ width: 'calc(50% - 5px)' }} placeholder="Latitude" />
+                                <div style={{ width: '100%' }}>
+                                    <div style={{ width: 'calc(50% - 5px)', float: 'right' }}>
+                                        <input 
+                                            className="form-control" 
+                                            placeholder="Longitude" 
+                                            onChange={(e) => {
+                                                this.setState({ officeLongitude: e.target.value });
+                                                if (e.target.value.length > 0) {
+                                                    this.setState({ valOfficeLongitude: false })
+                                                }
+                                            }}
+                                            style={this.state.valOfficeLongitude ?
+                                                { border: '1px solid red', width: '100%' }
+                                                :
+                                                { border: '1px solid #ccc', width: '100%' }
+                                            }
+                                        />
+                                        <span style={this.state.valOfficeLongitude ? { color: '#F86C6B', width: '100%', fontSize: '80%', display: 'inline-block' } : { visibility: 'collapse', width: '100%', display: 'inline-block' }}>*Longitude required</span>
+                                    </div>
+                                    <div style={{ width: 'calc(50% - 5px)' }}>
+                                        <input 
+                                            className="form-control" 
+                                            placeholder="Latitude" 
+                                            onChange={(e) => {
+                                                this.setState({ officeLatitude: e.target.value });
+                                                if (e.target.value.length > 0) {
+                                                    this.setState({ valOfficeLatitude: false })
+                                                }
+                                            }}
+                                            style={this.state.valOfficeLatitude ?
+                                                { border: '1px solid red', width: '100%' }
+                                                :
+                                                { border: '1px solid #ccc', width: '100%' }
+                                            }
+                                        />
+                                        <span style={this.state.valOfficeLatitude ? { color: '#F86C6B', width: '100%', fontSize: '80%', display: 'inline-block' } : { visibility: 'collapse', width: '100%', display: 'inline-block' }}>*Latitude required</span>
+                                    </div>
                                 </div>
                                 <span>Office start date : </span>
-                                <input type="date" className="form-control" style={{ width: '100%', marginBottom: '10px' }} />
+                                <input 
+                                    type="date" 
+                                    className="form-control" 
+                                    onChange={(e) => {
+                                        this.setState({ officeDate: e.target.value });
+                                        if (e.target.value.length > 0) {
+                                            this.setState({ valOfficeDate: false })
+                                        }
+                                    }}
+                                    style={this.state.valOfficeDate ?
+                                        { border: '1px solid red', width: '100%' }
+                                        :
+                                        { border: '1px solid #ccc', width: '100%' }
+                                    }
+                                />
+                                <span style={this.state.valOfficeDate ? { color: '#F86C6B', width: '100%', fontSize: '80%', display: 'inline-block' } : { visibility: 'collapse', width: '100%', display: 'inline-block' }}>*Date required</span>
                                 <span>Company : </span>
-                                <select className="form-control" style={{ width: '100%', marginBottom: '10px' }} onChange={(x)=> this.onchangeCompanies(x.target.value)} value={this.state.chooseCompany}>
-                                    <option selected disabled>Choose company</option>
+                                <select 
+                                    className="form-control" 
+                                    onChange={(x)=> this.onchangeCompanies(x.target.value)} 
+                                    value={this.state.officeCompany}
+                                    onChange={(e) => {
+                                        this.setState({ officeCompany: e.target.value });
+                                        if (e.target.value.length > 0) {
+                                            this.setState({ valOfficeCompany: false })
+                                        }
+                                    }}
+                                    style={this.state.valOfficeCompany ?
+                                        { border: '1px solid red', width: '100%' }
+                                        :
+                                        { border: '1px solid #ccc', width: '100%' }
+                                    }
+                                >
+                                    <option value="" selected disabled>Choose company</option>
                                     {this.state.Companies.map((option, index) => {
                                         return (
-                                            <option value={option.name}>{option.name}</option>
-                                        )
-                                    })}
+                                            <option value={option}>{option.name}</option>
+                                            )
+                                        })}
                                 </select>
-                                <button onClick={()=> this.testhapus()} style={{ width: '100%', marginBottom: '10px' }} type="button" class="btn btn-default">Create</button>
+                                <span style={this.state.valOfficeCompany ? { color: '#F86C6B', width: '100%', fontSize: '80%', display: 'inline-block' } : { visibility: 'collapse', width: '100%', display: 'inline-block' }}>*Latitude required</span>
+                                <button onClick={()=> this.createOfficeHandler()} style={{ width: '100%', marginBottom: '10px', marginTop:'10px' }} type="button" class="btn btn-default">Create</button>
                             </div>
                             <div className="half-box">
                                 <span className="form-label">
@@ -404,6 +482,7 @@ class Home extends Component {
                                     <span className="labell">Avenue : </span>
                                     {this.state.detilCompanies[0].revenue}
                                 </div>
+                                <button style={{float:'right'}} className="btn btn-secondary" onClick={()=> this.setState({pages:'1'})}>Back to overview</button>
                                 <div>
                                     <span className="labell">Phone No : </span>
                                     ({this.state.detilCompanies[0].phoneCode}) {this.state.detilCompanies[0].phoneNo}
@@ -412,7 +491,7 @@ class Home extends Component {
                         </div>
                         <div className="box">
                             <span className="form-label">
-                                {this.state.Companies.length === 0 ? <center>No Office Data</center> : "Office"}
+                                {this.state.detilCompanies[0].office.length === 0 ? <center>No Office Data</center> : "Office"}
                             </span>
                             {this.state.detilCompanies[0].office.map((data, index) => {
                                 return (
