@@ -33,13 +33,19 @@ class Home extends Component {
                             name: 'Hong Kong Office',
                             latitude: '-123',
                             Longitude: '123',
-                            startDate: '999'
+                            startDate: '2017-08-01'
                         },
                         {
                             name: 'Jakarta Office',
                             latitude: '-123',
                             Longitude: '123',
-                            startDate: '999'
+                            startDate: '2005-02-21'
+                        },
+                        {
+                            name: 'Singapore Office',
+                            latitude: '-123',
+                            Longitude: '123',
+                            startDate: '2015-09-13'
                         },
                     ]
                 },
@@ -54,13 +60,13 @@ class Home extends Component {
                             name: 'United State Office',
                             latitude: '-123',
                             Longitude: '123',
-                            startDate: '999'
+                            startDate: '2011-02-08'
                         },
                         {
                             name: 'United Kingdom Office',
                             latitude: '-123',
                             Longitude: '123',
-                            startDate: '999'
+                            startDate: '2013-09-14'
                         },
                     ]
                 },
@@ -149,12 +155,13 @@ class Home extends Component {
         if (stat) {
             let data = {
                 name: this.state.officeName,
-                lat: this.state.officeLatitude,
-                lng: this.state.officeLongitude,
-                date: this.state.officeDate,
-                company: this.state.officeCompany
+                latitude: this.state.officeLatitude,
+                Longitude: this.state.officeLongitude,
+                startDate: this.state.officeDate
             }
-            this.state.Companies.push(data);
+            var arrayOffice = this.state.Companies[this.state.officeCompany].office
+            arrayOffice.push(data);
+
             this.setState({
                 officeName: '', officeLatitude: '', officeLongitude: '', officeDate: '', officeCompany: ''
             });
@@ -183,31 +190,27 @@ class Home extends Component {
         var arrayData = this.state.Companies;
         var index = arrayData.indexOf(toRemove);
         arrayData.splice(index, 1);
-        console.log(this.state.Companies);
         this.setState({Companies : arrayData});
     }
-
+    
     removeOffice(data) {
         var toRemove = data;
-        var arrayData = this.state.Companies[0].office;
+        var arrayData = this.state.Companies[this.state.detilCompanies].office;
         var index = arrayData.indexOf(toRemove);
         arrayData.splice(index, 1);
-        this.setState({Companies : arrayData});
     }
 
-    viewDetilCompanies(data){
-        var array = [];
-        array.push(data);
-        this.setState({detilCompanies : array, pages:'2'});
+    viewDetilCompanies(index){
+        this.setState({detilCompanies : index, pages:'2'});
     }
 
     onchangeCompanies(val){
-        alert(val)
-        this.setState({officeCompany : val})
+        var value = this.state.Companies[val[0]].name;
+        alert(value)
+        this.setState({officeCompany : val[1]})
     }
 
     render() {
-        console.log('detil : '+ this.state.detilCompanies)
         return (
             <Grid>
                 <div style={{marginTop:'3em'}} />
@@ -296,10 +299,9 @@ class Home extends Component {
                                 <span>Company : </span>
                                 <select 
                                     className="form-control" 
-                                    onChange={(x)=> this.onchangeCompanies(x.target.value)} 
                                     value={this.state.officeCompany}
                                     onChange={(e) => {
-                                        this.setState({ officeCompany: e.target.value });
+                                        this.setState({officeCompany : e.target.value})
                                         if (e.target.value.length > 0) {
                                             this.setState({ valOfficeCompany: false })
                                         }
@@ -313,7 +315,7 @@ class Home extends Component {
                                     <option value="" selected disabled>Choose company</option>
                                     {this.state.Companies.map((option, index) => {
                                         return (
-                                            <option value={option}>{option.name}</option>
+                                            <option value={index}>{option.name}</option>
                                             )
                                         })}
                                 </select>
@@ -440,11 +442,11 @@ class Home extends Component {
                             </span>
                             {this.state.Companies.map((data, index) => {
                                 return (
-                                    <Col className="company-box" md={6} style={{cursor:'pointer'}} onClick={()=> {this.viewDetilCompanies(data)}}>
+                                    <Col className="company-box" md={6}>
                                         <button className="btn-danger"
                                             style={{width:'23px', height:'23px', float:'right', cursor: 'pointer', fontWeight:700, border:'1px solid #cccccc', borderRadius:'50%'}} 
                                             onClick={()=> this.removeCompanies(data)}><center>X</center></button>
-                                        <span className="title">
+                                        <span className="title" style={{cursor:'pointer'}} onClick={()=> {this.viewDetilCompanies(index)}}>
                                             {data.name}
                                         </span>
                                         <hr className="line" />
@@ -471,34 +473,34 @@ class Home extends Component {
                         <div className="box">
                             <Col className="detil-company-box" style={{cursor:'pointer'}}>
                                 <span className="title">
-                                    {this.state.detilCompanies[0].name}
+                                    {this.state.Companies[this.state.detilCompanies].name}
                                 </span>
                                 <hr className="line" />
                                 <div style={{ height: '60px' }}>
                                     <span className="labell">Address : </span>
-                                    {this.state.detilCompanies[0].address}
+                                    {this.state.Companies[this.state.detilCompanies].address}
                                 </div>
                                 <div>
                                     <span className="labell">Avenue : </span>
-                                    {this.state.detilCompanies[0].revenue}
+                                    {this.state.Companies[this.state.detilCompanies].revenue}
                                 </div>
                                 <button style={{float:'right'}} className="btn btn-secondary" onClick={()=> this.setState({pages:'1'})}>Back to overview</button>
                                 <div>
                                     <span className="labell">Phone No : </span>
-                                    ({this.state.detilCompanies[0].phoneCode}) {this.state.detilCompanies[0].phoneNo}
+                                    ({this.state.Companies[this.state.detilCompanies].phoneCode}) {this.state.Companies[this.state.detilCompanies].phoneNo}
                                 </div>
                             </Col>
                         </div>
                         <div className="box">
                             <span className="form-label">
-                                {this.state.detilCompanies[0].office.length === 0 ? <center>No Office Data</center> : "Office"}
+                                {this.state.Companies[this.state.detilCompanies].office.length === 0 ? <center>No Office Data</center> : "Office"}
                             </span>
-                            {this.state.detilCompanies[0].office.map((data, index) => {
+                            {this.state.Companies[this.state.detilCompanies].office.map((data, index) => {
                                 return (
                                     <Col className="company-box" md={6} style={{cursor:'pointer'}} onClick={()=> {this.setState({pages:2})}}>
                                         <button className="btn-danger"
                                             style={{width:'23px', height:'23px', float:'right', cursor: 'pointer', fontWeight:700, border:'1px solid #cccccc', borderRadius:'50%'}} 
-                                            onClick={()=> this.removeOffice(data)}><center>X</center></button>
+                                            onClick={()=> this.removeOffice(data, index)}><center>X</center></button>
                                         <span className="title">
                                             {data.name}
                                         </span>
